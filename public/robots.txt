@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+
+# AI crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+Sitemap: https://azamatlugat.uz/sitemap.xml
+
+# AI-readable site description
+# See: https://azamatlugat.uz/llms.txt

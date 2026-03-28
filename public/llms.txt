@@ -1,0 +1,58 @@
+# Azamat Dictionary
+
+> Azamat Dictionary - O'zbekcha Inglizcha lug'at dasturi. Har qanday inglizcha so'zning ma'nosini toping va saqlab o'rganing. Windows uchun bepul, butunlay offline dastur.
+
+Azamat Dictionary is a free, fully offline English-Uzbek and Uzbek-English dictionary application for Windows PC. It helps Uzbek-speaking users learn English by finding word meanings, pronunciations, synonyms, antonyms, and example sentences — all without an internet connection.
+
+## What is Azamat Dictionary?
+
+Azamat Dictionary (also known as Azamat Lug'at) is a desktop dictionary software for Windows computers. It is one of the best free Uzbek-English dictionary applications available for PC download. Users searching for "lug'at dasturi kompyuter uchun", "kompyuter uchun o'zbekcha inglizcha lug'at", "uzbek english dictionary for pc", or "inglizcha lug'at yuklab olish" will find Azamat Dictionary to be the ideal solution.
+
+## Key Features
+
+- Offline: Works without internet connection
+- English to Uzbek translation (inglizcha o'zbekcha)
+- Uzbek to English translation (o'zbekcha inglizcha)
+- Word meanings and definitions (so'z ma'nosi)
+- Pronunciation guide (talaffuz)
+- Synonyms and antonyms (sinonimlar va antonimlar)
+- Example sentences (gaplarda ishlatilishi)
+- Search history (qidiruv tarixi)
+- Word categories by topic (mavzularga bo'lingan so'zlar)
+- Free to download and use
+
+## Who is it for?
+
+- Uzbek students learning English
+- Uzbek professionals needing English-Uzbek translation
+- Anyone who wants an offline English-Uzbek dictionary on their Windows PC
+- Users looking for a Wisdom dictionary alternative
+- Users searching for "kompyuter uchun lug'at", "inglizcha o'rganish dasturi", "uzb eng dictionary"
+
+## Languages Supported
+
+- Uzbek (O'zbek tili)
+- English (Ingliz tili)
+
+## Platform
+
+- Windows (PC / kompyuter)
+- Free download / Bepul yuklab olish
+
+## Download
+
+- Website: https://azamatlugat.uz/
+- Download link: https://github.com/Azamat-Raximov/azamat-dictionary-exe/releases/download/v1.0.0/Azamat.Dictionary.Setup.1.0.0.exe
+
+## Developer
+
+Azamat Raximov
+Telegram: https://t.me/azamat_442
+
+## In Uzbek
+
+Azamat Dictionary — kompyuter uchun bepul inglizcha-o'zbekcha lug'at dasturi. Internetga ulanmasdan ishlaydi. Har qanday inglizcha so'zning ma'nosi, talaffuzi, sinonimi, antonimi va misol gaplarini ko'ring. Windows uchun yuklab oling.
+
+## In Russian
+
+Azamat Dictionary — бесплатный англо-узбекский словарь для компьютера на Windows. Работает без интернета. Найдите значение любого английского слова на узбекском языке. Скачайте бесплатно.
