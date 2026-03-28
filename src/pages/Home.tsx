@@ -189,6 +189,10 @@ export default function Home() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   return (
+    <>
+      {screenshots.map((s) => (
+        <link key={s.src} rel="preload" as="image" href={s.src} />
+      ))}
     <div className="min-h-screen bg-[#1A237E] text-white flex flex-col">
       <main className="flex flex-col items-center px-4 py-12 md:py-20 flex-1">
         <section className="text-center max-w-3xl mx-auto mb-10">
@@ -270,5 +274,6 @@ export default function Home() {
         <Lightbox index={lightboxIndex} onClose={() => setLightboxIndex(null)} />
       )}
     </div>
+    </>
   );
 }
