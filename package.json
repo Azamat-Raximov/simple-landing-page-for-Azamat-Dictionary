@@ -1,5 +1,5 @@
 {
-  "name": "azamat-dictionary",
+  "name": "@workspace/azamat-dictionary",
   "version": "1.0.0",
   "private": true,
   "type": "module",
