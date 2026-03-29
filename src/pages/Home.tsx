@@ -286,9 +286,36 @@ export default function Home() {
             <p className="text-base md:text-lg text-blue-100 leading-relaxed max-w-2xl mx-auto">
               Butunlayiga offline, komputeringizda ishlaydigan{" "}
               <span className="font-bold text-white">Azamat Dictionary</span>{" "}
-              {lang === "uz" && "dasturini yuklab oling."}
-              {lang === "en" && "— download it now."}
-              {lang === "ru" && "— скачайте прямо сейчас."}
+              {lang === "uz" && (
+                <>
+                  dasturini{" "}
+                  <a
+                    href="https://github.com/Azamat-Raximov/azamat-dictionary-exe/releases/download/v1.0.0/Azamat.Dictionary.Setup.1.0.0.exe"
+                    download
+                    className="font-bold text-white underline underline-offset-2 hover:text-blue-200 transition-colors"
+                  >yuklab oling</a>.
+                </>
+              )}
+              {lang === "en" && (
+                <>
+                  —{" "}
+                  <a
+                    href="https://github.com/Azamat-Raximov/azamat-dictionary-exe/releases/download/v1.0.0/Azamat.Dictionary.Setup.1.0.0.exe"
+                    download
+                    className="font-bold text-white underline underline-offset-2 hover:text-blue-200 transition-colors"
+                  >download it now</a>.
+                </>
+              )}
+              {lang === "ru" && (
+                <>
+                  —{" "}
+                  <a
+                    href="https://github.com/Azamat-Raximov/azamat-dictionary-exe/releases/download/v1.0.0/Azamat.Dictionary.Setup.1.0.0.exe"
+                    download
+                    className="font-bold text-white underline underline-offset-2 hover:text-blue-200 transition-colors"
+                  >скачайте прямо сейчас</a>.
+                </>
+              )}
             </p>
           </section>
 
