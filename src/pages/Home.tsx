@@ -222,8 +222,16 @@ export default function Home() {
       ))}
       <div className="min-h-screen bg-[#1A237E] text-white flex flex-col">
 
-        {/* Language switcher */}
-        <div className="flex justify-end px-6 pt-3 gap-1">
+        {/* Header: logo + language switcher */}
+        <div className="flex justify-between items-center px-4 pt-3 gap-1">
+
+          {/* Name */}
+          <div className="flex items-center flex-shrink-0">
+            <span className="text-white font-bold text-base leading-tight">Azamat Dictionary</span>
+          </div>
+
+          {/* Language buttons (right side) */}
+          <div className="flex items-center gap-1">
 
           {/* Desktop: show all 3 buttons */}
           <div className="hidden sm:flex gap-1">
@@ -267,6 +275,7 @@ export default function Home() {
               </div>
             )}
           </div>
+          </div>
         </div>
 
         <main className="flex flex-col items-center px-4 pt-4 pb-8 md:pt-6 md:pb-14 flex-1">
@@ -294,8 +303,8 @@ export default function Home() {
             <ul className="space-y-3 text-base md:text-lg text-blue-100">
               {t.features.map((feature, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <span className="mt-1 flex-shrink-0 w-2.5 h-2.5 rounded-full bg-white"></span>
-                  {renderFeature(feature)}
+                  <span className="mt-1.5 flex-shrink-0 w-2 h-2 rounded-full bg-white"></span>
+                  <span className="inline leading-relaxed">{renderFeature(feature)}</span>
                 </li>
               ))}
             </ul>
