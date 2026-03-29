@@ -165,29 +165,116 @@ function Carousel({ onOpen, t }: { onOpen: (index: number) => void; t: typeof tr
 
 function Lightbox({ index, onClose, t }: { index: number; onClose: () => void; t: typeof translations["uz"] }) {
   const [current, setCurrent] = useState(index);
-  const next = useCallback(() => setCurrent((c) => (c + 1) % screenshots.length), []);
-  const prev = useCallback(() => setCurrent((c) => (c - 1 + screenshots.length) % screenshots.length), []);
+  const [scale, setScale] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const touchState = useRef<{
+    dist: number | null;
+    baseScale: number;
+    basePan: { x: number; y: number };
+    startX: number;
+    startY: number;
+    startPan: { x: number; y: number };
+  }>({ dist: null, baseScale: 1, basePan: { x: 0, y: 0 }, startX: 0, startY: 0, startPan: { x: 0, y: 0 } });
+
+  const resetZoom = useCallback(() => { setScale(1); setPan({ x: 0, y: 0 }); }, []);
+
+  const goNext = useCallback(() => { resetZoom(); setCurrent((c) => (c + 1) % screenshots.length); }, [resetZoom]);
+  const goPrev = useCallback(() => { resetZoom(); setCurrent((c) => (c - 1 + screenshots.length) % screenshots.length); }, [resetZoom]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
-      if (e.key === "ArrowRight") next();
-      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") goNext();
+      if (e.key === "ArrowLeft") goPrev();
     };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
-  }, [next, prev, onClose]);
+  }, [goNext, goPrev, onClose]);
+
+  const getDist = (touches: React.TouchList) => {
+    const dx = touches[1].clientX - touches[0].clientX;
+    const dy = touches[1].clientY - touches[0].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      touchState.current.dist = getDist(e.touches);
+      touchState.current.baseScale = scale;
+      touchState.current.basePan = { ...pan };
+    } else if (e.touches.length === 1) {
+      touchState.current.dist = null;
+      touchState.current.startX = e.touches[0].clientX;
+      touchState.current.startY = e.touches[0].clientY;
+      touchState.current.startPan = { ...pan };
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    e.preventDefault();
+    if (e.touches.length === 2 && touchState.current.dist !== null) {
+      const newDist = getDist(e.touches);
+      const newScale = Math.min(Math.max(touchState.current.baseScale * (newDist / touchState.current.dist), 1), 6);
+      setScale(newScale);
+    } else if (e.touches.length === 1 && scale > 1) {
+      const dx = e.touches[0].clientX - touchState.current.startX;
+      const dy = e.touches[0].clientY - touchState.current.startY;
+      setPan({ x: touchState.current.startPan.x + dx, y: touchState.current.startPan.y + dy });
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (scale < 1.15) { resetZoom(); }
+    if (scale <= 1 && e.changedTouches.length === 1) {
+      const dx = e.changedTouches[0].clientX - touchState.current.startX;
+      const dy = e.changedTouches[0].clientY - touchState.current.startY;
+      if (Math.abs(dx) > 50 && Math.abs(dy) < 60) {
+        if (dx < 0) goNext(); else goPrev();
+      }
+    }
+    touchState.current.dist = null;
+  };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center" onClick={onClose}>
-      <div className="relative max-w-4xl w-full mx-16" onClick={(e) => e.stopPropagation()}>
-        <img src={screenshots[current].src} alt={screenshots[current].alt} className="w-full rounded-xl shadow-2xl object-contain max-h-[80vh]" draggable={false} />
-        <button onClick={prev} className="absolute -left-14 top-1/2 -translate-y-1/2 bg-[#1A237E] hover:bg-[#283593] text-white rounded-full w-11 h-11 flex items-center justify-center shadow-lg transition-colors duration-150 border-2 border-white/30 outline-none focus:outline-none" aria-label={t.prev}><ArrowLeft /></button>
-        <button onClick={next} className="absolute -right-14 top-1/2 -translate-y-1/2 bg-[#1A237E] hover:bg-[#283593] text-white rounded-full w-11 h-11 flex items-center justify-center shadow-lg transition-colors duration-150 border-2 border-white/30 outline-none focus:outline-none" aria-label={t.next}><ArrowRight /></button>
+    <div
+      className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center"
+      onClick={() => scale <= 1 && onClose()}
+    >
+      <div
+        className="relative max-w-4xl w-full mx-4 md:mx-16 touch-none select-none"
+        onClick={(e) => e.stopPropagation()}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="overflow-hidden rounded-xl">
+          <img
+            src={screenshots[current].src}
+            alt={screenshots[current].alt}
+            className="w-full object-contain max-h-[80vh] rounded-xl shadow-2xl"
+            draggable={false}
+            style={{
+              transform: `scale(${scale}) translate(${pan.x / scale}px, ${pan.y / scale}px)`,
+              transition: scale === 1 ? "transform 0.25s ease" : "none",
+              willChange: "transform",
+            }}
+          />
+        </div>
+
+        <button onClick={goPrev} className="absolute -left-14 top-1/2 -translate-y-1/2 bg-[#1A237E] hover:bg-[#283593] text-white rounded-full w-11 h-11 hidden md:flex items-center justify-center shadow-lg transition-colors duration-150 border-2 border-white/30 outline-none focus:outline-none" aria-label={t.prev}><ArrowLeft /></button>
+        <button onClick={goNext} className="absolute -right-14 top-1/2 -translate-y-1/2 bg-[#1A237E] hover:bg-[#283593] text-white rounded-full w-11 h-11 hidden md:flex items-center justify-center shadow-lg transition-colors duration-150 border-2 border-white/30 outline-none focus:outline-none" aria-label={t.next}><ArrowRight /></button>
+
         <button onClick={onClose} className="absolute top-3 right-3 bg-[#1A237E] hover:bg-[#283593] text-white rounded-full w-9 h-9 flex items-center justify-center text-lg font-bold transition-colors duration-150 shadow-lg border-2 border-white/30 outline-none focus:outline-none" aria-label={t.close}>✕</button>
+
+        {scale > 1 && (
+          <button onClick={resetZoom} className="absolute top-3 left-3 bg-black/60 text-white rounded-full px-3 py-1 text-xs font-bold outline-none focus:outline-none border border-white/30">
+            Reset
+          </button>
+        )}
+
         <div className="flex justify-center gap-2 mt-4">
           {screenshots.map((_, i) => (
-            <button key={i} onClick={() => setCurrent(i)} className={`rounded-full transition-all duration-300 outline-none focus:outline-none ${i === current ? "w-6 h-2.5 bg-white" : "w-2.5 h-2.5 bg-white/40 hover:bg-white/70"}`} aria-label={`Slide ${i + 1}`} />
+            <button key={i} onClick={() => { setCurrent(i); resetZoom(); }} className={`rounded-full transition-all duration-300 outline-none focus:outline-none ${i === current ? "w-6 h-2.5 bg-white" : "w-2.5 h-2.5 bg-white/40 hover:bg-white/70"}`} aria-label={`Slide ${i + 1}`} />
           ))}
         </div>
         <p className="text-center text-white/60 text-sm mt-2">{current + 1} / {screenshots.length}</p>
